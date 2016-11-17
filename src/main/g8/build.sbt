@@ -65,7 +65,6 @@ lazy val optionSettings = Seq(
     "-Xfatal-warnings",
     "-Xlint",
     "-Yno-adapted-args",
-    "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
     "-Xfuture"),
   javacOptions ++= Seq("-target", "1.8", "-source", "1.8"),
@@ -94,26 +93,23 @@ lazy val root = (project in file("."))
       Seq(
         "com.fatboyindustrial.gson-javatime-serialisers" % "gson-javatime-serialisers" % "1.1.1",
         "com.google.code.gson" % "gson" % "2.8.0",
-        "commons-codec"            % "commons-codec"                  % "1.10",
-        "javax.servlet"            % "javax.servlet-api"              % "3.1.0",
-        "javax.transaction"        % "jta"                            % "1.1",
-        "net.databinder.dispatch" %% "dispatch-core"                  % "0.11.3",
-        "org.eclipse.jetty"        % "jetty-server"                   % jettyVersion          % "compile;test",
-        "org.eclipse.jetty"        % "jetty-servlets"                 % jettyVersion          % "compile;test",
-        "org.eclipse.jetty"        % "jetty-webapp"                   % jettyVersion          % "compile;test",
-        "org.json4s"              %% "json4s-jackson"                 % "3.4.0",
-        "org.scalatest"           %% "scalatest"                      % scalaTestVersion      % "test",
-        "org.scalatra"            %% "scalatra"                       % scalatraVersion,
-        "org.scalatra"            %% "scalatra-json"                  % scalatraVersion,
-        "org.scalatra"            %% "scalatra-scalate"               % scalatraVersion,
-        "org.scalatra"            %% "scalatra-slf4j"                 % scalatraVersion,
-        "org.scalatra"            %% "scalatra-swagger"               % scalatraVersion,
-        "org.scalatra"            %% "scalatra-swagger-ext"           % scalatraVersion,
-        "org.scalatra"            %% "scalatra-scalatest"            % scalatraVersion)
+        "commons-codec" % "commons-codec" % "1.10",
+        "javax.servlet" % "javax.servlet-api" % "3.1.0",
+        "javax.transaction" % "jta" % "1.1",
+        "org.eclipse.jetty" % "jetty-server" % jettyVersion % "compile;test",
+        "org.eclipse.jetty" % "jetty-servlets" % jettyVersion % "compile;test",
+        "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % "compile;test",
+        "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+        "org.scalatra" %% "scalatra" % scalatraVersion,
+        "org.scalatra" %% "scalatra-json" % scalatraVersion,
+        "org.scalatra" %% "scalatra-scalate" % scalatraVersion,
+        "org.scalatra" %% "scalatra-slf4j" % scalatraVersion,
+        "org.scalatra" %% "scalatra-swagger" % scalatraVersion,
+        "org.scalatra" %% "scalatra-swagger-ext" % scalatraVersion,
+        "org.scalatra" %% "scalatra-scalatest" % scalatraVersion).map(
           .map(_.excludeAll(ExclusionRule("org.slf4j", "slf4j-jdk14"),
             ExclusionRule("org.slf4j", "slf4j-log4j12"),
             ExclusionRule("javax.servlet", "servlet-api")))
-      )
     },
     mainClass in assembly := Some("JettyMain")
   )
