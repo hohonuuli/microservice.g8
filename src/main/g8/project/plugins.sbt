@@ -14,7 +14,7 @@ addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.2.0")
 addSbtPlugin("com.github.fedragon" % "sbt-todolist" % "0.6")
 
 // https://olafurpg.github.io/scalafmt
-addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "0.4.8")
+addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "0.6.8")
 
 // https://github.com/sbt/sbt-assembly
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")

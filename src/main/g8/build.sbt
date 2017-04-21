@@ -1,3 +1,17 @@
+val codecVersion = "1.10"
+val configVersion = "1.3.1"
+val gsonJavatimeVersion = "1.1.1"
+val gsonVersion = "2.8.0"
+val jettyVersion = "9.4.4.v20170414"
+val jtaVersion = "1.1"
+val junitVersion = "4.12"
+val logbackVersion = "1.1.7"
+val scalatestVersion = "3.0.3"
+val scalatraVersion = "2.5.0"
+val servletVersion = "3.1.0"
+val slf4jVersion = "1.7.21"
+
+
 lazy val buildSettings = Seq(
   organization := "$organization$",
   scalaVersion := "$scala_version$",
@@ -18,14 +32,12 @@ lazy val consoleSettings = Seq(
 
 lazy val dependencySettings = Seq(
   libraryDependencies ++= {
-    val slf4jVersion = "1.7.21"
-    val logbackVersion = "1.1.7"
     Seq(
       "ch.qos.logback" % "logback-classic" % logbackVersion,
       "ch.qos.logback" % "logback-core" % logbackVersion,
-      "com.typesafe" % "config" % "1.3.1",
-      "junit" % "junit" % "4.12" % "test",
-      "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+      "com.typesafe" % "config" % configVersion,
+      "junit" % "junit" % junitVersion % "test",
+      "org.scalatest" %% "scalatest" % scalatestVersion % "test",
       "org.slf4j" % "log4j-over-slf4j" % slf4jVersion,
       "org.slf4j" % "slf4j-api" % slf4jVersion)
   },
@@ -77,29 +89,30 @@ lazy val optionSettings = Seq(
 addCommandAlias("cleanall", ";clean;clean-files")
 
 // --- Modules
-lazy val varsSettings = buildSettings ++ consoleSettings ++ dependencySettings ++
+lazy val appSettings = buildSettings ++ consoleSettings ++ dependencySettings ++
     optionSettings ++ reformatOnCompileSettings
 
-lazy val root = (project in file("."))
-  .settings(varsSettings)
+val apps = Seq("jetty-main")
+
+lazy val `$name$` = (project in file("."))
+  .enablePlugins(JettyPlugin)
+  .settings(appSettings)
   .settings(
     name := "$name$",
     version := "$version$",
     todosTags := Set("TODO", "FIXME", "WTF"),
     fork := true,
     libraryDependencies ++= {
-      val jettyVersion = "9.3.11.v20160721"
-      val scalatraVersion = "2.5.0-RC1"
       Seq(
-        "com.fatboyindustrial.gson-javatime-serialisers" % "gson-javatime-serialisers" % "1.1.1",
-        "com.google.code.gson" % "gson" % "2.8.0",
-        "commons-codec" % "commons-codec" % "1.10",
-        "javax.servlet" % "javax.servlet-api" % "3.1.0",
-        "javax.transaction" % "jta" % "1.1",
+        "com.fatboyindustrial.gson-javatime-serialisers" % "gson-javatime-serialisers" % gsonJavatimeVersion,
+        "com.google.code.gson" % "gson" % gsonVersion,
+        "commons-codec" % "commons-codec" % codecVersion,
+        "javax.servlet" % "javax.servlet-api" % servletVersion,
+        "javax.transaction" % "jta" % jtaVersion,
         "org.eclipse.jetty" % "jetty-server" % jettyVersion % "compile;test",
         "org.eclipse.jetty" % "jetty-servlets" % jettyVersion % "compile;test",
         "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % "compile;test",
-        "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+        "org.scalatest" %% "scalatest" % scalatestVersion % "test",
         "org.scalatra" %% "scalatra" % scalatraVersion,
         "org.scalatra" %% "scalatra-json" % scalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % scalatraVersion,
@@ -113,23 +126,17 @@ lazy val root = (project in file("."))
     },
     mainClass in assembly := Some("JettyMain")
   )
-
-// -- SBT-PACK
-// For sbt-pack
-packAutoSettings
-
-// For sbt-pack
-val apps = Seq("jetty-main")
-
-packAutoSettings ++ Seq(packExtraClasspath := apps.map(_ -> Seq("${PROG_HOME}/conf")).toMap,
-  packJvmOpts := apps.map(_ -> Seq("-Duser.timezone=UTC", "-Xmx4g")).toMap,
-  packDuplicateJarStrategy := "latest",
-  packJarNameConvention := "original")
+  .settings( // config sbt-pack
+    packAutoSettings ++ Seq(
+      packExtraClasspath := apps.map(_ -> Seq("\${PROG_HOME}/conf")).toMap,
+      packJvmOpts := apps.map(_ -> Seq("-Duser.timezone=UTC", "-Xmx4g")).toMap,
+      packDuplicateJarStrategy := "latest",
+      packJarNameConvention := "original"
+    )
+  )
   
-// OTHER SETTINGS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// --- Aliases
+addCommandAlias("cleanall", ";clean;clean-files")
 
-// -- sbt-native-packager
-enablePlugins(JavaServerAppPackaging)
+  
 
-// -- xsbt-web-plugin
-enablePlugins(JettyPlugin)
