@@ -89,7 +89,7 @@ addCommandAlias("cleanall", ";clean;clean-files")
 
 // --- Modules
 lazy val appSettings = buildSettings ++ consoleSettings ++ dependencySettings ++
-    optionSettings ++ reformatOnCompileSettings
+    optionSettings
 
 val apps = Seq("jetty-main")
 
