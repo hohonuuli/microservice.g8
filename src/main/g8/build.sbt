@@ -81,8 +81,7 @@ lazy val optionSettings = Seq(
     "-Xfuture"),
   javacOptions ++= Seq("-target", "1.8", "-source", "1.8"),
   incOptions := incOptions.value.withNameHashing(true),
-  updateOptions := updateOptions.value.withCachedResolution(true),
-  scalafmtConfig := Some(file(".scalafmt"))
+  updateOptions := updateOptions.value.withCachedResolution(true)
 )
 
 // --- Aliases
@@ -100,10 +99,9 @@ lazy val `$name$` = (project in file("."))
   .settings(
     name := "$name$",
     version := "$version$",
-    todosTags := Set("TODO", "FIXME", "WTF"),
+    todosTags := Set("TODO", "FIXME", "WTF\?"),
     fork := true,
-    libraryDependencies ++= {
-      Seq(
+    libraryDependencies ++= Seq(
         "com.fatboyindustrial.gson-javatime-serialisers" % "gson-javatime-serialisers" % gsonJavatimeVersion,
         "com.google.code.gson" % "gson" % gsonVersion,
         "commons-codec" % "commons-codec" % codecVersion,
@@ -119,11 +117,10 @@ lazy val `$name$` = (project in file("."))
         "org.scalatra" %% "scalatra-slf4j" % scalatraVersion,
         "org.scalatra" %% "scalatra-swagger" % scalatraVersion,
         "org.scalatra" %% "scalatra-swagger-ext" % scalatraVersion,
-        "org.scalatra" %% "scalatra-scalatest" % scalatraVersion).map(
+        "org.scalatra" %% "scalatra-scalatest" % scalatraVersion)
           .map(_.excludeAll(ExclusionRule("org.slf4j", "slf4j-jdk14"),
             ExclusionRule("org.slf4j", "slf4j-log4j12"),
-            ExclusionRule("javax.servlet", "servlet-api")))
-    },
+            ExclusionRule("javax.servlet", "servlet-api"))),
     mainClass in assembly := Some("JettyMain")
   )
   .settings( // config sbt-pack
@@ -134,9 +131,6 @@ lazy val `$name$` = (project in file("."))
       packJarNameConvention := "original"
     )
   )
-  
-// --- Aliases
-addCommandAlias("cleanall", ";clean;clean-files")
 
   
 
