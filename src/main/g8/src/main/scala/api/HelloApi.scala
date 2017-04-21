@@ -17,6 +17,6 @@ class HelloApi(val executor: ExecutionContext)
           body = "{}",
           reason = "A 'name' parameter is required"
         )))
-    s"""{"response": "Hello $name"}"""
+    s"""{"response": "Hello \$name"}"""
   }
 }
